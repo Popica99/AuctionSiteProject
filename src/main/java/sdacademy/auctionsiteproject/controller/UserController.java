@@ -39,4 +39,25 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @PutMapping("/{userName}")
+    public ResponseEntity<String> updateUser(@PathVariable String userName, @RequestBody User updatedUser)
+    {
+        if (userService.updateUser(userName, updatedUser).isPresent())
+            return ResponseEntity.ok("User " + updatedUser.getAccountName() + " updated successfully!");
+        else
+            return ResponseEntity.status(404).body("User with account name " + userName + " not found!");
+    }
+
+    @DeleteMapping("/{accountName}")
+    public ResponseEntity<String> deleteUserByAccountName(@PathVariable String accountName)
+    {
+        try{
+            String message = userService.deleteUserByAccountName(accountName);
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        } catch (RuntimeException e)
+        {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 }
