@@ -2,9 +2,12 @@ package sdacademy.auctionsiteproject.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sdacademy.auctionsiteproject.dto.AuctionRequestDTO;
 import sdacademy.auctionsiteproject.entity.Auction;
 import sdacademy.auctionsiteproject.entity.Category;
 import sdacademy.auctionsiteproject.entity.User;
+import sdacademy.auctionsiteproject.exceptions.AuctionNotFoundException;
+import sdacademy.auctionsiteproject.exceptions.CategoryNotFoundException;
 import sdacademy.auctionsiteproject.repository.AuctionRepository;
 
 import javax.print.attribute.UnmodifiableSetException;
@@ -51,9 +54,9 @@ public class AuctionService {
         return auctionRepository.findAllByName(auctionName);
     }
 
-    public Optional<Auction> updateAuction (Long id, Auction updatedAuction)
+    public Auction updateAuction (Long id, AuctionRequestDTO updatedAuctionDTO)
     {
-        return auctionRepository.findById(id)
+        /*return auctionRepository.findById(id)
                 .map(auction ->
                 {
                     auction.setName(updatedAuction.getName());
@@ -68,7 +71,30 @@ public class AuctionService {
                     auction.setCategory(updatedAuction.getCategory());
 
                     return auctionRepository.save(auction);
-                });
+                });*/
+        Optional<Auction> auctionFind = auctionRepository.findById(id);
+        if (auctionFind.isPresent())
+        {
+            Auction auction = auctionFind.get();
+
+            auction.setName(updatedAuctionDTO.getAuction().getName());
+            auction.setDescription(updatedAuctionDTO.getAuction().getDescription());
+            auction.setPromoted(updatedAuctionDTO.getAuction().getPromoted());
+            auction.setBitNowPrice(updatedAuctionDTO.getAuction().getBitNowPrice());
+            auction.setBuyNowPrice(updatedAuctionDTO.getAuction().getBuyNowPrice());
+            auction.setStartBiddingDate(updatedAuctionDTO.getAuction().getStartBiddingDate());
+            auction.setEndBiddingDate(updatedAuctionDTO.getAuction().getEndBiddingDate());
+            auction.setNumbersOfViews(updatedAuctionDTO.getAuction().getNumbersOfViews());
+
+            Category category = categoryService.getCategoryByName(updatedAuctionDTO.getCategoryName());
+            if (category != null)
+            {
+                auction.setCategory(category);
+                return auctionRepository.save(auction);
+            }
+            else throw new CategoryNotFoundException("Category not found!");
+        }
+        else throw new AuctionNotFoundException("Auction not found!");
     }
 
     public Auction getAuctionById(Long id)
@@ -78,7 +104,7 @@ public class AuctionService {
         {
             return optionalAuction.get();
         }
-        else throw new RuntimeException("Auction with id " + id + " does not exists!");
+        else throw new AuctionNotFoundException("Auction not found!");
     }
 
     public String deleteAuctionById(Long id)

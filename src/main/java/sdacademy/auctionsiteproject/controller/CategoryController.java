@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sdacademy.auctionsiteproject.entity.Category;
+import sdacademy.auctionsiteproject.exceptions.CategoryNotFoundException;
 import sdacademy.auctionsiteproject.service.CategoryService;
 
 import javax.print.DocFlavor;
@@ -23,7 +24,7 @@ public class CategoryController {
         try{
             Category newCategory = categoryService.createCategory(category);
             return new ResponseEntity<>(newCategory, HttpStatus.CREATED);
-        } catch (RuntimeException e)
+        } catch (CategoryNotFoundException e)
         {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -41,7 +42,7 @@ public class CategoryController {
         try{
             Category categoryByName = categoryService.getCategoryByName(name);
             return new ResponseEntity<>(categoryByName, HttpStatus.OK);
-        } catch (RuntimeException e)
+        } catch (CategoryNotFoundException e)
         {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -53,7 +54,7 @@ public class CategoryController {
         try {
             String message = categoryService.deleteCategoryByName(name);
             return new ResponseEntity<>(message, HttpStatus.OK);
-        } catch (RuntimeException e)
+        } catch (CategoryNotFoundException e)
         {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

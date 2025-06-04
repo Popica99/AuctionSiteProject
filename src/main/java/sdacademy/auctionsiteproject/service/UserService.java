@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import sdacademy.auctionsiteproject.entity.Roles;
 import sdacademy.auctionsiteproject.entity.User;
+import sdacademy.auctionsiteproject.exceptions.UserNotFoundException;
 import sdacademy.auctionsiteproject.repository.UserRepository;
 
 import javax.management.relation.Role;
@@ -43,7 +44,7 @@ public class UserService {
     public User getUserByAccountName(String accountName)
     {
         return userRepository.findByAccountName(accountName).
-                orElseThrow(() -> new RuntimeException("User with account name " + accountName + " not found!"));
+                orElseThrow(() -> new UserNotFoundException("User not found!"));
     }
 
     public String deleteUserByAccountName(String name)

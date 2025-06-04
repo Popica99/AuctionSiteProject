@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sdacademy.auctionsiteproject.entity.User;
+import sdacademy.auctionsiteproject.exceptions.UserNotFoundException;
 import sdacademy.auctionsiteproject.service.UserService;
 
 import java.util.List;
@@ -22,7 +23,7 @@ public class UserController {
         try {
             User newUser = userService.createUser(user);
             return new ResponseEntity<>(newUser, HttpStatus.CREATED);
-        } catch (RuntimeException e)
+        } catch (UserNotFoundException e)
         {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -34,7 +35,7 @@ public class UserController {
         try {
             User userByName = userService.getUserByAccountName(accountName);
             return new ResponseEntity<>(userByName, HttpStatus.OK);
-        } catch (RuntimeException e)
+        } catch (UserNotFoundException e)
         {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -55,7 +56,7 @@ public class UserController {
         try{
             String message = userService.deleteUserByAccountName(accountName);
             return new ResponseEntity<>(message, HttpStatus.OK);
-        } catch (RuntimeException e)
+        } catch (UserNotFoundException e)
         {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

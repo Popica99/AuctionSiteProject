@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.resource.ResourceUrlProvider;
 import sdacademy.auctionsiteproject.dto.AuctionRequestDTO;
 import sdacademy.auctionsiteproject.entity.Auction;
+import sdacademy.auctionsiteproject.exceptions.AuctionNotFoundException;
+import sdacademy.auctionsiteproject.exceptions.CategoryNotFoundException;
 import sdacademy.auctionsiteproject.service.AuctionService;
 
 import javax.swing.*;
@@ -21,20 +23,18 @@ public class AuctionController {
     @Autowired
     private ResourceUrlProvider resourceUrlProvider;
 
-    @PostMapping
-    public ResponseEntity<Auction> createAuction(@RequestBody AuctionRequestDTO auctionRequestDTO)
+    @PostMapping("/{userName}")
+    public ResponseEntity<Auction> createAuction(@PathVariable String userName, @RequestBody AuctionRequestDTO auctionRequestDTO)
     {
-        Auction newAuction = auctionService.createAuction(auctionRequestDTO.getAuction(), auctionRequestDTO.getUserName(), auctionRequestDTO.getCategoryName());
+        Auction newAuction = auctionService.createAuction(auctionRequestDTO.getAuction(), userName, auctionRequestDTO.getCategoryName());
         return new ResponseEntity<>(newAuction, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateAuction(@PathVariable Long id, @RequestBody Auction updatedAuction)
+    public ResponseEntity<Auction> updateAuction(@PathVariable Long id, @RequestBody AuctionRequestDTO updatedAuctionDTO)
     {
-        if (auctionService.updateAuction(id, updatedAuction).isPresent())
-            return ResponseEntity.ok("Auction " + updatedAuction.getAuction_id() + " updated successfully!");
-        else
-            return ResponseEntity.status(404).body("Action with id " + id + " not found!");
+        Auction auctionResult = auctionService.updateAuction(id, updatedAuctionDTO);
+        return ResponseEntity.ok(auctionResult);
     }
 
     @GetMapping
@@ -48,7 +48,7 @@ public class AuctionController {
     {
         try {
             return new ResponseEntity<>(auctionService.getAuctionsByName(auctionName), HttpStatus.OK);
-        } catch (RuntimeException e)
+        } catch (AuctionNotFoundException e)
         {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -60,7 +60,7 @@ public class AuctionController {
         try {
             String message = auctionService.deleteAuctionById(id);
             return new ResponseEntity<>(message, HttpStatus.OK);
-        } catch (RuntimeException e)
+        } catch (AuctionNotFoundException e)
         {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

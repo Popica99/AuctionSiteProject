@@ -3,6 +3,7 @@ package sdacademy.auctionsiteproject.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sdacademy.auctionsiteproject.entity.Category;
+import sdacademy.auctionsiteproject.exceptions.CategoryNotFoundException;
 import sdacademy.auctionsiteproject.repository.CategoryRepository;
 import sdacademy.auctionsiteproject.repository.UserRepository;
 
@@ -33,7 +34,7 @@ public class CategoryService {
     public Category getCategoryByName(String name)
     {
         return categoryRepository.findByName(name).
-                orElseThrow(() -> new RuntimeException("Category with name " + name + " does not exists!"));
+                orElseThrow(() -> new CategoryNotFoundException("Category not found!"));
     }
 
     public String deleteCategoryByName(String name)

@@ -55,5 +55,9 @@ public class User {
     @JsonIgnore
     private List<Auction> auctions;
 
+    @ManyToOne
+    @JoinColumn(name = "bidding_id")
+    private Bidding bidding;
+
 
 }
