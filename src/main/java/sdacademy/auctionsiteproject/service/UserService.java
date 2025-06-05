@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import sdacademy.auctionsiteproject.entity.Roles;
 import sdacademy.auctionsiteproject.entity.User;
 import sdacademy.auctionsiteproject.exceptions.UserNotFoundException;
+import sdacademy.auctionsiteproject.repository.RoleRepository;
 import sdacademy.auctionsiteproject.repository.UserRepository;
 
 import javax.management.relation.Role;
@@ -18,6 +19,9 @@ public class UserService {
 
     @Autowired
     public UserRepository userRepository;
+
+    @Autowired
+    public RoleRepository roleRepository;
 
     public User createUser(User user)
     {
@@ -33,11 +37,21 @@ public class UserService {
         newUser.setAccountStatus(user.getAccountStatus());
         newUser.setType(user.getType());
 
-        Roles roles = new Roles("user");
-        List<Roles> rolesList = new ArrayList<>();
-        rolesList.add(roles);
-        newUser.setRoles(rolesList);
+        Roles checkRole = roleRepository.findByName("user");
 
+        List<Roles> rolesList = new ArrayList<>();
+        if (checkRole == null)
+        {
+            Roles roles = new Roles("user");
+            rolesList.add(roles);
+        }
+        else
+        {
+            rolesList.add(checkRole);
+        }
+
+
+        newUser.setRoles(rolesList);
         return userRepository.save(newUser);
     }
 
