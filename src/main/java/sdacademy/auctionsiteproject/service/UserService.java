@@ -1,6 +1,8 @@
 package sdacademy.auctionsiteproject.service;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import sdacademy.auctionsiteproject.entity.Roles;
@@ -23,12 +25,15 @@ public class UserService {
     @Autowired
     public RoleRepository roleRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     public User createUser(User user)
     {
         User newUser = new User();
 
         newUser.setEmail(user.getEmail());
-        newUser.setPassword(user.getPassword());
+        newUser.setPassword(passwordEncoder.encode(user.getPassword()));
         newUser.setAccountName(user.getAccountName());
         newUser.setCity(user.getCity());
         newUser.setProvince(user.getProvince());
@@ -55,15 +60,57 @@ public class UserService {
         return userRepository.save(newUser);
     }
 
+    public User createAdmin(User user)
+    {
+        User newUser = new User();
+
+        newUser.setEmail(user.getEmail());
+        newUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        newUser.setAccountName(user.getAccountName());
+        newUser.setCity(user.getCity());
+        newUser.setProvince(user.getProvince());
+        newUser.setAddress(user.getAddress());
+        newUser.setDateOfAccountCreation(user.getDateOfAccountCreation());
+        newUser.setAccountStatus(user.getAccountStatus());
+        newUser.setType(user.getType());
+
+        Roles checkRole = roleRepository.findByName("admin");
+
+        List<Roles> rolesList = new ArrayList<>();
+        if (checkRole == null)
+        {
+            Roles roles = new Roles("admin");
+            rolesList.add(roles);
+        }
+        else
+        {
+            rolesList.add(checkRole);
+        }
+
+
+        newUser.setRoles(rolesList);
+        return userRepository.save(newUser);
+    }
+
     public User getUserByAccountName(String accountName)
     {
         return userRepository.findByAccountName(accountName).
                 orElseThrow(() -> new UserNotFoundException("User not found!"));
     }
 
+    @Transactional
+    public void clearRoles(String name) {
+        User user = getUserByAccountName(name);
+        user.getRoles().clear();
+        userRepository.save(user);
+    }
+
+    @Transactional
     public String deleteUserByAccountName(String name)
     {
-        userRepository.delete(getUserByAccountName(name));
+        clearRoles(name);
+        User user = getUserByAccountName(name);
+        userRepository.delete(user);
         return "User was deleted successfully";
     }
 
@@ -73,7 +120,7 @@ public class UserService {
                 .map(user ->
                 {
                     user.setEmail(updatedUser.getEmail());
-                    user.setPassword(updatedUser.getPassword());
+                    user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
                     user.setAccountName(updatedUser.getAccountName());
                     user.setProvince(updatedUser.getProvince());
                     user.setCity(updatedUser.getCity());

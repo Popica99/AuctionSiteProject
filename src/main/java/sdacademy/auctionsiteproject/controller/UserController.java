@@ -17,11 +17,28 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @GetMapping
+    public ResponseEntity<String> testUsersEndpoint() {
+        return ResponseEntity.ok("GET /users works!");
+    }
+
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user)
     {
         try {
             User newUser = userService.createUser(user);
+            return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+        } catch (UserNotFoundException e)
+        {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/admin")
+    public ResponseEntity<User> createAdmin(@RequestBody User user)
+    {
+        try {
+            User newUser = userService.createAdmin(user);
             return new ResponseEntity<>(newUser, HttpStatus.CREATED);
         } catch (UserNotFoundException e)
         {
