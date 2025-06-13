@@ -49,10 +49,10 @@ public class AuctionService {
         return auctionRepository.findAll();
     }
 
-    public List<Auction> getAuctionsByName(String auctionName)
-    {
-        return auctionRepository.findAllByName(auctionName);
-    }
+//    public List<Auction> getAuctionsByName(String auctionName)
+//    {
+//        return auctionRepository.findAllByName(auctionName);
+//    }
 
     public Auction updateAuction (Long id, AuctionRequestDTO updatedAuctionDTO)
     {
@@ -115,5 +115,10 @@ public class AuctionService {
 
     public Auction saveAuction(Auction auction) {
         return auctionRepository.save(auction);
+    }
+
+    //---------------- Functions added for Frontend ----------------
+    public List<Auction> getAuctionsByName(String name) {
+        return auctionRepository.findByNameContainingIgnoreCase(name);
     }
 }

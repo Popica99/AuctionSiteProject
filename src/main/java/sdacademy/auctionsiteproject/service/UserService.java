@@ -47,8 +47,9 @@ public class UserService {
         List<Roles> rolesList = new ArrayList<>();
         if (checkRole == null)
         {
-            Roles roles = new Roles("user");
-            rolesList.add(roles);
+            Roles newRole = new Roles("user");
+            roleRepository.save(newRole);
+            rolesList.add(newRole);
         }
         else
         {
@@ -79,8 +80,9 @@ public class UserService {
         List<Roles> rolesList = new ArrayList<>();
         if (checkRole == null)
         {
-            Roles roles = new Roles("admin");
-            rolesList.add(roles);
+            Roles newRole = new Roles("admin");
+            roleRepository.save(newRole);
+            rolesList.add(newRole);
         }
         else
         {

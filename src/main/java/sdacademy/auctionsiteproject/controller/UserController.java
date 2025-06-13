@@ -78,4 +78,10 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    //---------------- Functions added for Frontend ----------------
+    @GetMapping("/login-test")
+    public ResponseEntity<String> loginTest() {
+        return new ResponseEntity<>("Login successful!", HttpStatus.OK);
+    }
 }

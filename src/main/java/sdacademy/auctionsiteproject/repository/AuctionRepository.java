@@ -10,4 +10,7 @@ import java.util.Optional;
 @Repository
 public interface AuctionRepository extends JpaRepository<Auction, Long> {
     List<Auction> findAllByName(String name);
+
+    //---------------- Functions added for Frontend ----------------
+    List<Auction> findByNameContainingIgnoreCase(String name);
 }

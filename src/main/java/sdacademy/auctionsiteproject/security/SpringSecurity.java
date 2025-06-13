@@ -50,18 +50,19 @@ public class SpringSecurity {
 
         //---------------------
 
-//        http.csrf().disable();
-//
 //        http
+//                .cors() // ✅ activează CORS
+//                .and()
+//                .csrf().disable()
 //                .authorizeHttpRequests((auth) -> auth
 //                        .requestMatchers("/users/**").permitAll()
-//                        .requestMatchers("/categories/**").permitAll()   // ✅ adăugat
-//                        .requestMatchers("/auctions/**").permitAll()     // ✅ adăugat
-//                        .requestMatchers("/currentBits/**").permitAll()  // ✅ adăugat (pentru bidding)
+//                        .requestMatchers("/categories/**").permitAll()
+//                        .requestMatchers("/auctions/**").permitAll()
+//                        .requestMatchers("/currentBits/**").permitAll()
 //                        .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
 //                        .anyRequest().authenticated()
 //                )
-//                .httpBasic();
+//                .httpBasic(); // ✅ activează autentificarea BASIC
 //
 //        return http.build();
 

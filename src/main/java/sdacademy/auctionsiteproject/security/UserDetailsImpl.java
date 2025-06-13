@@ -24,8 +24,8 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public String getUsername() {
-        return user.getEmail();
-    } // atentie ca folosim EMAIL in loc de USERNAME!!!
+        return user.getAccountName(); // 🟢 corect
+    }
 
     @Override
     public String getPassword() {

@@ -63,4 +63,12 @@ public class AuctionController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    //---------------- Functions added for Frontend ----------------
+
+    @GetMapping("/search")
+    public ResponseEntity<List<Auction>> searchAuctionsByName(@RequestParam("name") String name) {
+        List<Auction> results = auctionService.getAuctionsByName(name);
+        return new ResponseEntity<>(results, HttpStatus.OK);
+    }
 }
