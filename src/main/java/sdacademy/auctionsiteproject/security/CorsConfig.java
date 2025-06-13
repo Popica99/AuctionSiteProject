@@ -16,6 +16,7 @@ public class CorsConfig {
                         .allowedOrigins("http://localhost:4200") // permite frontendul tău
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*");
+
             }
         };
     }
