@@ -3,6 +3,7 @@ package sdacademy.auctionsiteproject.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sdacademy.auctionsiteproject.entity.Category;
+import sdacademy.auctionsiteproject.exceptions.CategoryAlreadyExistsException;
 import sdacademy.auctionsiteproject.exceptions.CategoryNotFoundException;
 import sdacademy.auctionsiteproject.repository.CategoryRepository;
 import sdacademy.auctionsiteproject.repository.UserRepository;
@@ -18,6 +19,10 @@ public class CategoryService {
 
     public Category createCategory(Category category)
     {
+        if (categoryRepository.findByName(category.getName()).isPresent()) {
+            throw new CategoryAlreadyExistsException("Category already exists!");
+        }
+
         Category newCategory = new Category();
 
         newCategory.setName(category.getName());

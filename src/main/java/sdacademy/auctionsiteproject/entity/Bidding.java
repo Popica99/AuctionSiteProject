@@ -19,7 +19,7 @@ public class Bidding {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long bidding_id;
 
-    @Column
+    @Column(nullable = false)
     private double currentPrice;
 
     @Column

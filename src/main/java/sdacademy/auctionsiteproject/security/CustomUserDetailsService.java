@@ -18,7 +18,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.findByAccountName(email).get();
+        User user = userRepository.findByEmail(email).get();
 
         if (user != null) {
             return new UserDetailsImpl(user);

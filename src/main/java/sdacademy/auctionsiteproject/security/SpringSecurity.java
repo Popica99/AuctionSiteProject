@@ -38,14 +38,43 @@ public class SpringSecurity {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+//        http.csrf().disable();
+//        http
+//                .authorizeHttpRequests((auth) -> auth
+//                        .requestMatchers("/users/**").permitAll()
+//                        .requestMatchers(HttpMethod.DELETE,"/users/**").hasRole("ADMIN")
+//                        .anyRequest().authenticated()
+//                )
+//                .httpBasic();
+//        return http.build();
+
+        //---------------------
+
+//        http.csrf().disable();
+//
+//        http
+//                .authorizeHttpRequests((auth) -> auth
+//                        .requestMatchers("/users/**").permitAll()
+//                        .requestMatchers("/categories/**").permitAll()   // ✅ adăugat
+//                        .requestMatchers("/auctions/**").permitAll()     // ✅ adăugat
+//                        .requestMatchers("/currentBits/**").permitAll()  // ✅ adăugat (pentru bidding)
+//                        .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
+//                        .anyRequest().authenticated()
+//                )
+//                .httpBasic();
+//
+//        return http.build();
+
+        //---------------------
+
         http.csrf().disable();
+
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/users/**").permitAll()
-                        .requestMatchers(HttpMethod.DELETE,"/users/**").hasRole("ADMIN")
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 )
                 .httpBasic();
+
         return http.build();
     }
 

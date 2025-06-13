@@ -112,4 +112,8 @@ public class AuctionService {
         auctionRepository.delete(getAuctionById(id));
         return "Auction was deleted successfully!";
     }
+
+    public Auction saveAuction(Auction auction) {
+        return auctionRepository.save(auction);
+    }
 }

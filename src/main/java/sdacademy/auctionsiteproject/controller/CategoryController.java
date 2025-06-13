@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import sdacademy.auctionsiteproject.entity.Auction;
 import sdacademy.auctionsiteproject.entity.Category;
 import sdacademy.auctionsiteproject.exceptions.CategoryNotFoundException;
 import sdacademy.auctionsiteproject.service.CategoryService;
@@ -58,5 +59,12 @@ public class CategoryController {
         {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping("/{name}/auctions")
+    public ResponseEntity<List<Auction>> getAuctionsByCategory(@PathVariable String name) {
+        Category category = categoryService.getCategoryByName(name);
+        List<Auction> auctions = category.getAuctions();
+        return new ResponseEntity<>(auctions, HttpStatus.OK);
     }
 }

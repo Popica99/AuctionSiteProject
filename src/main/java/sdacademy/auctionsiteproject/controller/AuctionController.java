@@ -20,8 +20,6 @@ public class AuctionController {
 
     @Autowired
     private AuctionService auctionService;
-    @Autowired
-    private ResourceUrlProvider resourceUrlProvider;
 
     @PostMapping("/{userName}")
     public ResponseEntity<Auction> createAuction(@PathVariable String userName, @RequestBody AuctionRequestDTO auctionRequestDTO)

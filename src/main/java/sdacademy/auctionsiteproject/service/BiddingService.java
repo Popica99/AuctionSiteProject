@@ -31,23 +31,25 @@ public class BiddingService {
 
         Auction auction = auctionService.getAuctionById(auctionId);
         User user = userService.getUserByAccountName(userName);
-        if (user != null)
+        if (auction != null)
         {
-            if (auction != null)
+            if (bidding.getCurrentPrice() > auction.getBitNowPrice())
             {
-                if (bidding.getCurrentPrice() > auction.getBitNowPrice())
-                {
-                    newBidding.setCurrentPrice(bidding.getCurrentPrice());
-                    newBidding.setEndDate(auction.getEndBiddingDate());
-                    newBidding.setAuction(auction);
-                    newBidding.setUser(user);
+                newBidding.setCurrentPrice(bidding.getCurrentPrice());
+                newBidding.setEndDate(auction.getEndBiddingDate());
+                newBidding.setAuction(auction);
+                newBidding.setUser(user);
 
-                    return biddingRepository.save(newBidding);
-                }
-                else throw new PriceTooLowException("New price is lower or equal then the current price!");
+                Bidding savedBidding = biddingRepository.save(newBidding);
+
+                // 3. Actualizează prețul curent în auction
+                auction.setBitNowPrice(bidding.getCurrentPrice());
+                auctionService.saveAuction(auction); // trebuie să creezi această metodă
+
+                return savedBidding;
             }
-            else  throw new AuctionNotFoundException("Auction not found!");
+            else throw new PriceTooLowException("New price is lower or equal then the current price!");
         }
-        else throw new UserNotFoundException("User not found!");
+        else  throw new AuctionNotFoundException("Auction not found!");
     }
 }
