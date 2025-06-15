@@ -39,7 +39,12 @@ public class AuctionService {
         newAuction.setEndBiddingDate(auction.getEndBiddingDate());
 
         newAuction.setUsers(userService.getUserByAccountName(userName));
-        newAuction.setCategory(categoryService.getCategoryByName(categoryName));
+
+        Category category = categoryService.getCategoryByName(categoryName);
+        if (category == null) {
+            throw new CategoryNotFoundException("Categoria '" + categoryName + "' nu există.");
+        }
+        newAuction.setCategory(category);
 
         return auctionRepository.save(newAuction);
     }
@@ -121,4 +126,6 @@ public class AuctionService {
     public List<Auction> getAuctionsByName(String name) {
         return auctionRepository.findByNameContainingIgnoreCase(name);
     }
+
+    
 }

@@ -42,9 +42,8 @@ public class BiddingService {
 
                 Bidding savedBidding = biddingRepository.save(newBidding);
 
-                // 3. Actualizează prețul curent în auction
                 auction.setBitNowPrice(bidding.getCurrentPrice());
-                auctionService.saveAuction(auction); // trebuie să creezi această metodă
+                auctionService.saveAuction(auction);
 
                 return savedBidding;
             }

@@ -6,7 +6,6 @@ import sdacademy.auctionsiteproject.entity.Category;
 import sdacademy.auctionsiteproject.exceptions.CategoryAlreadyExistsException;
 import sdacademy.auctionsiteproject.exceptions.CategoryNotFoundException;
 import sdacademy.auctionsiteproject.repository.CategoryRepository;
-import sdacademy.auctionsiteproject.repository.UserRepository;
 
 import java.security.PublicKey;
 import java.util.List;
@@ -33,6 +32,7 @@ public class CategoryService {
 
     public List<Category> getAllCategories()
     {
+
         return categoryRepository.findAll();
     }
 

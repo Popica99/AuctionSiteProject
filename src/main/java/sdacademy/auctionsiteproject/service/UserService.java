@@ -96,6 +96,7 @@ public class UserService {
 
     public User getUserByAccountName(String accountName)
     {
+        System.out.println("Caut user cu accountName = " + accountName);
         return userRepository.findByAccountName(accountName).
                 orElseThrow(() -> new UserNotFoundException("User not found!"));
     }

@@ -7,9 +7,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.resource.ResourceUrlProvider;
 import sdacademy.auctionsiteproject.dto.AuctionRequestDTO;
 import sdacademy.auctionsiteproject.entity.Auction;
+import sdacademy.auctionsiteproject.entity.User;
 import sdacademy.auctionsiteproject.exceptions.AuctionNotFoundException;
 import sdacademy.auctionsiteproject.exceptions.CategoryNotFoundException;
+import sdacademy.auctionsiteproject.repository.AuctionRepository;
 import sdacademy.auctionsiteproject.service.AuctionService;
+import sdacademy.auctionsiteproject.service.UserService;
 
 import javax.swing.*;
 import java.util.List;
@@ -20,6 +23,12 @@ public class AuctionController {
 
     @Autowired
     private AuctionService auctionService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private AuctionRepository auctionRepository;
 
     @PostMapping("/{userName}")
     public ResponseEntity<Auction> createAuction(@PathVariable String userName, @RequestBody AuctionRequestDTO auctionRequestDTO)
@@ -70,5 +79,12 @@ public class AuctionController {
     public ResponseEntity<List<Auction>> searchAuctionsByName(@RequestParam("name") String name) {
         List<Auction> results = auctionService.getAuctionsByName(name);
         return new ResponseEntity<>(results, HttpStatus.OK);
+    }
+
+    @GetMapping("/users/{accountName}/auctions")
+    public ResponseEntity<List<Auction>> getAuctionsByUser(@PathVariable String accountName) {
+        User user = userService.getUserByAccountName(accountName);
+        List<Auction> auctions = auctionRepository.findByUsers(user);
+        return new ResponseEntity<>(auctions, HttpStatus.OK);
     }
 }

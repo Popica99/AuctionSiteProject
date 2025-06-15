@@ -3,6 +3,7 @@ package sdacademy.auctionsiteproject.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import sdacademy.auctionsiteproject.entity.Auction;
+import sdacademy.auctionsiteproject.entity.User;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,4 +14,5 @@ public interface AuctionRepository extends JpaRepository<Auction, Long> {
 
     //---------------- Functions added for Frontend ----------------
     List<Auction> findByNameContainingIgnoreCase(String name);
+    List<Auction> findByUsers(User user);
 }
