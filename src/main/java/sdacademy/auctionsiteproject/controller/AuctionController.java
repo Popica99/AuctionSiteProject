@@ -87,4 +87,14 @@ public class AuctionController {
         List<Auction> auctions = auctionRepository.findByUsers(user);
         return new ResponseEntity<>(auctions, HttpStatus.OK);
     }
+
+    @GetMapping("/id/{id}")
+    public ResponseEntity<Auction> getAuctionById(@PathVariable Long id) {
+        try {
+            Auction auction = auctionService.getAuctionById(id);
+            return new ResponseEntity<>(auction, HttpStatus.OK);
+        } catch (AuctionNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 }

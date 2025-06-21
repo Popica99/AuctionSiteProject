@@ -22,4 +22,11 @@ public class BiddingController {
         Bidding newBidding = biddingService.createBidding(biddingRequestDTO.getBidding(), biddingRequestDTO.getUserName(), auction_id);
         return new ResponseEntity<>(newBidding, HttpStatus.CREATED);
     }
+
+    @PostMapping("/buy/{auction_id}")
+    public ResponseEntity<Bidding> buyNow(@PathVariable Long auction_id, @RequestBody BiddingRequestDTO biddingRequestDTO) {
+        Bidding bidding = biddingService.buyNow(biddingRequestDTO.getUserName(), auction_id);
+        return new ResponseEntity<>(bidding, HttpStatus.CREATED);
+    }
+
 }

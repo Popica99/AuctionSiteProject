@@ -51,4 +51,15 @@ public class BiddingService {
         }
         else  throw new AuctionNotFoundException("Auction not found!");
     }
+
+    public Bidding buyNow(String userName, Long auctionId) {
+        User user = userService.getUserByAccountName(userName);
+        Auction auction = auctionService.getAuctionById(auctionId);
+        Bidding bidding = new Bidding();
+        bidding.setCurrentPrice(auction.getBitNowPrice());
+        bidding.setUser(user);
+        bidding.setAuction(auction);
+        return biddingRepository.save(bidding);
+    }
+
 }

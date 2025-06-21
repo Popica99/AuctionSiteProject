@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
+import sdacademy.auctionsiteproject.dto.UserDTO;
 import sdacademy.auctionsiteproject.entity.Roles;
 import sdacademy.auctionsiteproject.entity.User;
 import sdacademy.auctionsiteproject.exceptions.UserNotFoundException;
@@ -117,22 +118,16 @@ public class UserService {
         return "User was deleted successfully";
     }
 
-    public Optional<User> updateUser (String userName, User updatedUser)
-    {
+    public Optional<User> updateUser(String userName, UserDTO dto) {
         return userRepository.findByAccountName(userName)
-                .map(user ->
-                {
-                    user.setEmail(updatedUser.getEmail());
-                    user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
-                    user.setAccountName(updatedUser.getAccountName());
-                    user.setProvince(updatedUser.getProvince());
-                    user.setCity(updatedUser.getCity());
-                    user.setAddress(updatedUser.getAddress());
-                    user.setDateOfAccountCreation(updatedUser.getDateOfAccountCreation());
-                    user.setAccountStatus(updatedUser.getAccountStatus());
-                    user.setType(updatedUser.getType());
-                    user.setRoles(updatedUser.getRoles());
-                    user.setAuctions(updatedUser.getAuctions());
+                .map(user -> {
+                    user.setEmail(dto.email);
+                    user.setPassword(passwordEncoder.encode(dto.password));
+                    user.setAccountName(dto.accountName);
+                    user.setProvince(dto.province);
+                    user.setCity(dto.city);
+                    user.setAddress(dto.address);
+                    user.setType(dto.type);
                     return userRepository.save(user);
                 });
     }

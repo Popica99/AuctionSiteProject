@@ -61,22 +61,6 @@ public class AuctionService {
 
     public Auction updateAuction (Long id, AuctionRequestDTO updatedAuctionDTO)
     {
-        /*return auctionRepository.findById(id)
-                .map(auction ->
-                {
-                    auction.setName(updatedAuction.getName());
-                    auction.setDescription(updatedAuction.getDescription());
-                    auction.setPromoted(updatedAuction.getPromoted());
-                    auction.setBitNowPrice(updatedAuction.getBitNowPrice());
-                    auction.setBuyNowPrice(updatedAuction.getBuyNowPrice());
-                    auction.setStartBiddingDate(updatedAuction.getStartBiddingDate());
-                    auction.setEndBiddingDate(updatedAuction.getEndBiddingDate());
-                    auction.setNumbersOfViews(updatedAuction.getNumbersOfViews());
-
-                    auction.setCategory(updatedAuction.getCategory());
-
-                    return auctionRepository.save(auction);
-                });*/
         Optional<Auction> auctionFind = auctionRepository.findById(id);
         if (auctionFind.isPresent())
         {
@@ -102,14 +86,9 @@ public class AuctionService {
         else throw new AuctionNotFoundException("Auction not found!");
     }
 
-    public Auction getAuctionById(Long id)
-    {
-        Optional<Auction> optionalAuction = auctionRepository.findById(id);
-        if (optionalAuction.isPresent())
-        {
-            return optionalAuction.get();
-        }
-        else throw new AuctionNotFoundException("Auction not found!");
+    public Auction getAuctionById(Long id) {
+        return auctionRepository.findById(id)
+                .orElseThrow(() -> new AuctionNotFoundException("Licitația cu id " + id + " nu a fost găsită"));
     }
 
     public String deleteAuctionById(Long id)

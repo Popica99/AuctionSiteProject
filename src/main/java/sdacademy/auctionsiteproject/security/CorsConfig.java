@@ -10,9 +10,9 @@ public class CorsConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**") // permite toate rutele
-                .allowedOrigins("http://localhost:4200") // ✅ adaugă URL-ul frontendului
-                .allowedMethods("*")
+                .allowedOrigins("http://localhost:4200") // adaugă URL-ul frontendului
+                .allowedMethods("GET", "POST", "PUT", "DELETE")
                 .allowedHeaders("*")
-                .allowCredentials(true); // ✅ permite trimiterea de credentiale (ex: Authorization)
+                .allowCredentials(true); // permite trimiterea de credentiale (ex: Authorization)
     }
 }

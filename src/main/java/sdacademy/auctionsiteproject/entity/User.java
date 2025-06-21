@@ -59,5 +59,8 @@ public class User {
     @JoinColumn(name = "bidding_id")
     private Bidding bidding;
 
-
+    //------- pentru frontend -------
+    public Long getId() {
+        return user_id; //in frontend nu vede user_id ci id
+    }
 }

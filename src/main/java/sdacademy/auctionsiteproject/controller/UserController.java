@@ -4,11 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import sdacademy.auctionsiteproject.dto.UserDTO;
 import sdacademy.auctionsiteproject.entity.User;
 import sdacademy.auctionsiteproject.exceptions.UserNotFoundException;
 import sdacademy.auctionsiteproject.service.UserService;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
@@ -59,10 +61,10 @@ public class UserController {
     }
 
     @PutMapping("/{userName}")
-    public ResponseEntity<String> updateUser(@PathVariable String userName, @RequestBody User updatedUser)
-    {
-        if (userService.updateUser(userName, updatedUser).isPresent())
-            return ResponseEntity.ok("User " + updatedUser.getAccountName() + " updated successfully!");
+    public ResponseEntity<String> updateUser(@PathVariable String userName, @RequestBody UserDTO dto) {
+        Optional<User> updated = userService.updateUser(userName, dto);
+        if (updated.isPresent())
+            return ResponseEntity.ok("User " + dto.accountName + " updated successfully!");
         else
             return ResponseEntity.status(404).body("User with account name " + userName + " not found!");
     }

@@ -38,38 +38,7 @@ public class SpringSecurity {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//        http.csrf().disable();
-//        http
-//                .authorizeHttpRequests((auth) -> auth
-//                        .requestMatchers("/users/**").permitAll()
-//                        .requestMatchers(HttpMethod.DELETE,"/users/**").hasRole("ADMIN")
-//                        .anyRequest().authenticated()
-//                )
-//                .httpBasic();
-//        return http.build();
-
-        //---------------------
-
-//        http
-//                .cors() // ✅ activează CORS
-//                .and()
-//                .csrf().disable()
-//                .authorizeHttpRequests((auth) -> auth
-//                        .requestMatchers("/users/**").permitAll()
-//                        .requestMatchers("/categories/**").permitAll()
-//                        .requestMatchers("/auctions/**").permitAll()
-//                        .requestMatchers("/currentBits/**").permitAll()
-//                        .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
-//                        .anyRequest().authenticated()
-//                )
-//                .httpBasic(); // ✅ activează autentificarea BASIC
-//
-//        return http.build();
-
-        //---------------------
-
         http.csrf().disable();
-
         http
                 .authorizeHttpRequests((auth) -> auth
                         .anyRequest().permitAll()
