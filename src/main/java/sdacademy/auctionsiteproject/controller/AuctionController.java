@@ -97,4 +97,11 @@ public class AuctionController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+
+    //---------------- Bidding ----------------
+    @GetMapping("/active")
+    public ResponseEntity<List<Auction>> getActiveAuctions() {
+        return ResponseEntity.ok(auctionService.getActiveAuctions());
+    }
 }

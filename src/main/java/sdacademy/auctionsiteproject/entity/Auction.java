@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -40,6 +43,9 @@ public class Auction {
     @Column
     private Long numbersOfViews;
 
+    @Column(nullable = false)
+    private boolean isCompleted = false;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User users;
@@ -48,7 +54,15 @@ public class Auction {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @ManyToOne
-    @JoinColumn(name = "bidding_id")
-    private Bidding bidding;
+    @OneToMany(mappedBy = "auction", cascade = CascadeType.ALL)
+    private List<Bidding> biddings;
+
+    @JsonProperty("isCompleted")
+    public boolean isCompleted() {
+        return isCompleted;
+    }
+
+    public void setIsCompleted(boolean isCompleted) {
+        this.isCompleted = isCompleted;
+    }
 }

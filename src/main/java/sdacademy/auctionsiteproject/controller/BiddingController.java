@@ -29,4 +29,8 @@ public class BiddingController {
         return new ResponseEntity<>(bidding, HttpStatus.CREATED);
     }
 
+    @GetMapping("/completed/{categoryName}")
+    public ResponseEntity<?> getCompletedByCategory(@PathVariable String categoryName) {
+        return new ResponseEntity<>(biddingService.getCompletedBiddingsByCategory(categoryName), HttpStatus.OK);
+    }
 }

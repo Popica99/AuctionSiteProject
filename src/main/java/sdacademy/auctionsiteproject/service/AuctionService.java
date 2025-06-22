@@ -11,8 +11,11 @@ import sdacademy.auctionsiteproject.exceptions.CategoryNotFoundException;
 import sdacademy.auctionsiteproject.repository.AuctionRepository;
 
 import javax.print.attribute.UnmodifiableSetException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class AuctionService {
@@ -37,7 +40,7 @@ public class AuctionService {
         newAuction.setBuyNowPrice(auction.getBuyNowPrice());
         newAuction.setStartBiddingDate(auction.getStartBiddingDate());
         newAuction.setEndBiddingDate(auction.getEndBiddingDate());
-
+        auction.setIsCompleted(false);
         newAuction.setUsers(userService.getUserByAccountName(userName));
 
         Category category = categoryService.getCategoryByName(categoryName);
@@ -74,7 +77,7 @@ public class AuctionService {
             auction.setStartBiddingDate(updatedAuctionDTO.getAuction().getStartBiddingDate());
             auction.setEndBiddingDate(updatedAuctionDTO.getAuction().getEndBiddingDate());
             auction.setNumbersOfViews(updatedAuctionDTO.getAuction().getNumbersOfViews());
-
+            auction.setIsCompleted(false);
             Category category = categoryService.getCategoryByName(updatedAuctionDTO.getCategoryName());
             if (category != null)
             {
@@ -106,5 +109,16 @@ public class AuctionService {
         return auctionRepository.findByNameContainingIgnoreCase(name);
     }
 
+    //---------------- Bidding ----------------
+    public List<Auction> getActiveAuctions() {
+        List<Auction> allAuctions = auctionRepository.findAll();
+        String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+
+        return allAuctions.stream()
+                .filter(auction -> auction.getStartBiddingDate() != null && auction.getEndBiddingDate() != null)
+                .filter(auction -> currentDate.compareTo(auction.getStartBiddingDate()) >= 0 &&
+                        currentDate.compareTo(auction.getEndBiddingDate()) <= 0)
+                .collect(Collectors.toList());
+    }
     
 }
